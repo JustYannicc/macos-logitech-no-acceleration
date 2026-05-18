@@ -14,22 +14,17 @@ You probably only need this if all of these are true:
 - The same mouse feels normal on a Mac when Logitech's driver software is installed.
 - You do not want to install Logitech G HUB or Logi Options just to fix pointer feel.
 
-This is most likely relevant for Logitech gaming mice that normally rely on G HUB, including mice used through a Lightspeed receiver or Powerplay mat. It was confirmed with a G502 X + Powerplay setup.
+This is most likely relevant for Logitech gaming mice that normally rely on G HUB, especially mice used through a Powerplay mat. It was confirmed with a G502 X + Powerplay setup. The Powerplay mat appears to expose the mouse through a Logitech USB receiver path where macOS can keep the wrong per-device acceleration value.
 
 It may not be needed for Logitech's productivity mice, Bolt/Unifying devices, or setups managed by Logi Options+. Those devices can expose different IDs and may use different software paths.
 
 If G HUB, Logi Options, LinearMouse, SteerMouse, CursorSense, or another mouse driver is installed, it may override this setting. For the simplest setup, use this without Logitech's own driver software.
 
-## Why Not G HUB, BetterTouchTool, or Karabiner?
+## Why Not G HUB or BetterTouchTool?
 
 Logitech G HUB can make the mouse feel correct, but it is heavy, performs poorly, and is unpleasant to keep running if all you want is normal pointer movement. This tool exists for people who want the mouse to feel right without installing Logitech's driver stack.
 
-BetterTouchTool and Karabiner-Elements are still better suited for most input customizations:
-
-- BetterTouchTool is great for mouse buttons, gestures, scrolling behavior, window actions, and app-specific workflows.
-- Karabiner-Elements is great for keyboard remapping and low-level key behavior.
-
-But at the moment, they did not fix this specific issue. Even after disabling pointer acceleration in macOS and setting up mouse behavior in BetterTouchTool/Karabiner, the pointer still felt sluggish and floaty. The mouse did not feel like it did on Windows/Linux, or on a Mac with Logitech's own drivers installed.
+BetterTouchTool has Logitech mouse integration, but at the moment it did not fix this specific issue. Even after disabling pointer acceleration in macOS and setting up mouse behavior in BetterTouchTool, the pointer still felt sluggish and floaty. The mouse did not feel like it did on Windows/Linux, or on a Mac with Logitech's own drivers installed.
 
 The missing piece was the per-device HID value on the Logitech receiver:
 
@@ -39,11 +34,11 @@ HIDMouseAcceleration
 
 This looks like a bug or missing behavior in BetterTouchTool's Logitech mouse handling: BetterTouchTool can configure the mouse, but it currently does not appear to force the receiver's `HIDMouseAcceleration` value back to disabled.
 
-This script only fixes that one low-level value. It does not try to replace BetterTouchTool, Karabiner, or your mouse button setup.
+This script only fixes that one low-level value. It does not try to replace BetterTouchTool or your mouse button setup.
 
 ## The Problem
 
-This was created after a Logitech G502 X using a Powerplay mat/USB receiver was running at 1000 Hz, but macOS kept reverting the device to:
+This was created after a Logitech G502 X using a Powerplay mat/USB receiver was running at 1000 Hz, but macOS kept reverting the receiver path to:
 
 ```text
 HIDMouseAcceleration=45056
@@ -70,7 +65,7 @@ Known working setup:
 - macOS
 - No Logitech G HUB or Logi Options driver actively managing the mouse
 
-This should work for other Logitech devices that expose the same `HIDMouseAcceleration` property. Logitech's vendor ID is commonly `1133` (`0x046d`), so this tool defaults to matching all Logitech HID devices by vendor ID.
+This may be most relevant to Logitech Powerplay/Lightspeed-style gaming mouse setups. It should work for other Logitech devices that expose the same `HIDMouseAcceleration` property. Logitech's vendor ID is commonly `1133` (`0x046d`), so this tool defaults to matching all Logitech HID devices by vendor ID.
 
 If you want to be more conservative, you can scope it to a specific product ID.
 
