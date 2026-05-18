@@ -1,0 +1,15 @@
+#!/bin/zsh
+# Built by @justyannicc
+set -eu
+
+VENDOR_ID="${VENDOR_ID:-1133}"
+PRODUCT_ID="${PRODUCT_ID:-}"
+
+MATCHING="{\"VendorID\":${VENDOR_ID}}"
+if [[ -n "$PRODUCT_ID" ]]; then
+  MATCHING="{\"VendorID\":${VENDOR_ID},\"ProductID\":${PRODUCT_ID}}"
+fi
+
+/usr/bin/hidutil property \
+  --matching "$MATCHING" \
+  --set '{"HIDMouseAcceleration":-1}' >/dev/null
