@@ -24,16 +24,20 @@ If G HUB, Logi Options, LinearMouse, SteerMouse, CursorSense, or another mouse d
 
 Logitech G HUB can make the mouse feel correct, but it is heavy, performs poorly, and is unpleasant to keep running if all you want is normal pointer movement. This tool exists for people who want the mouse to feel right without installing Logitech's driver stack.
 
-BetterTouchTool and Karabiner-Elements are better suited for many input customizations:
+BetterTouchTool and Karabiner-Elements are still better suited for most input customizations:
 
 - BetterTouchTool is great for mouse buttons, gestures, scrolling behavior, window actions, and app-specific workflows.
 - Karabiner-Elements is great for keyboard remapping and low-level key behavior.
 
-However, in this case, even after disabling pointer acceleration in macOS and setting up mouse behavior in BetterTouchTool/Karabiner, the pointer still felt sluggish and floaty. The mouse did not feel like it did on Windows/Linux, or on a Mac with Logitech's own drivers installed. The missing piece was the per-device HID value on the Logitech receiver:
+But at the moment, they did not fix this specific issue. Even after disabling pointer acceleration in macOS and setting up mouse behavior in BetterTouchTool/Karabiner, the pointer still felt sluggish and floaty. The mouse did not feel like it did on Windows/Linux, or on a Mac with Logitech's own drivers installed.
+
+The missing piece was the per-device HID value on the Logitech receiver:
 
 ```text
 HIDMouseAcceleration
 ```
+
+This looks like a bug or missing behavior in BetterTouchTool's Logitech mouse handling: BetterTouchTool can configure the mouse, but it currently does not appear to force the receiver's `HIDMouseAcceleration` value back to disabled.
 
 This script only fixes that one low-level value. It does not try to replace BetterTouchTool, Karabiner, or your mouse button setup.
 
